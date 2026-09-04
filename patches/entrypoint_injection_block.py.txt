@@ -1,0 +1,9 @@
+    # Files injected from config, written before the initial commit so they are
+    # part of the history the agent inherits rather than something that appeared
+    # mid-task. This is what makes each experimental cell a config change instead
+    # of an image rebuild.
+    for item in task_config.get("injections") or []:
+        target = WORKSPACE / str(item["path"])
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(str(item["content"]))
+        print(f"  injected {item['path']} ({len(str(item['content']))} chars)")
